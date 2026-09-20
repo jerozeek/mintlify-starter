@@ -1,0 +1,29 @@
+---
+title: "Authentication"
+description: "Authenticate every request with your API key."
+---
+
+Send your API key as a Bearer token on every request:
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+```bash
+curl "$BASE_URL/api/v1/assets" \
+  -H "Authorization: Bearer $API_KEY"
+```
+
+<Warning>
+Keep your API key on the server. Never ship it in client-side code or commit it
+to source control.
+</Warning>
+
+## Content types
+
+| Request                          | `Content-Type`        |
+| -------------------------------- | --------------------- |
+| Upload asset, Bulk upload assets | `multipart/form-data` |
+| Bulk trash, Bulk delete          | `application/json`    |
+
+Responses are returned as `application/vnd.api+json`.

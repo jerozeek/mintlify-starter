@@ -1,72 +1,99 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Media Cloud API",
+  "description": "API for uploading, listing, retrieving and deleting media assets on Media Cloud.",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#00AFEF",
+    "light": "#4DC7F5",
+    "dark": "#4291D5"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+  "fonts": {
+    "family": "DM Sans"
   },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
-  "navbar": {
-    "links": [
+  "navigation": {
+    "tabs": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "tab": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "concepts/assets",
+              "concepts/upload-and-delete"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "essentials/errors",
+              "essentials/pagination"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "terminal",
+        "groups": [
+          {
+            "group": "Assets",
+            "pages": [
+              "api-reference/assets/overview",
+              "api-reference/assets/upload-asset",
+              "api-reference/assets/bulk-upload-assets",
+              "api-reference/assets/get-all-assets",
+              "api-reference/assets/get-asset",
+              "api-reference/assets/bulk-trash-assets",
+              "api-reference/assets/bulk-delete-assets"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "icon": "clock-rotate-left",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog"
+            ]
+          }
+        ]
       }
-    ],
+    ]
+  },
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/introduction"
+    }
+  ],
+  "navbar": {
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Website",
+      "href": "https://mediacloud.me"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://mediacloud.me"
     }
   }
 }

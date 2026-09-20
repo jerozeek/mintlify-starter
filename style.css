@@ -1,0 +1,11 @@
+/*
+ * Custom CSS for the Media Cloud API docs.
+ *
+ * Endpoint descriptions come from openapi.json and render in the page header's lead slot, which
+ * Mintlify sizes larger than body text. Set them back to the body size so an endpoint page reads
+ * like a concept page. Overview pages keep the default because their lead is a one-line subtitle.
+ */
+html[data-current-path^="/api-reference/"]:not([data-current-path$="/overview"]) #header > .prose {
+  font-size: 1rem;
+  line-height: 1.75;
+}

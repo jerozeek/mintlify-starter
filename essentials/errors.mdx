@@ -1,0 +1,39 @@
+---
+title: "Errors"
+description: "HTTP status codes you can expect from the Media Cloud API."
+---
+
+The API uses standard HTTP status codes.
+
+| Code  | Meaning                                                                 |
+| ----- | ----------------------------------------------------------------------- |
+| `200` | The request succeeded. The body holds the asset or list.                |
+| `201` | The upload succeeded. The body holds the created asset or assets.       |
+| `204` | Bulk trash or bulk delete succeeded. The body is empty.                 |
+| `401` | The API key is missing or invalid. See [Authentication](/authentication). |
+
+<Note>
+The collection this reference is built from only captured successful
+responses. Validation and not-found behavior, such as a missing `file` field or
+an unknown `assetId`, is not documented yet and will be added here once
+confirmed.
+</Note>
+
+## Handling responses
+
+Check the status code before reading the body: a `204` has no body to parse.
+
+```javascript
+const res = await fetch(`${BASE_URL}/api/v1/assets/bulk-trash`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ asset_ids: ids }),
+});
+
+if (res.status !== 204) {
+  throw new Error(`Trash failed with ${res.status}`);
+}
+```

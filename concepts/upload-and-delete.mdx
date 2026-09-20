@@ -1,0 +1,41 @@
+---
+title: "Uploading and deleting"
+description: "Single and bulk uploads, and the two-step trash and delete flow."
+---
+
+## Uploading
+
+| Goal              | Route                                                           | Field       |
+| ----------------- | --------------------------------------------------------------- | ----------- |
+| One file          | [Upload asset](/api-reference/assets/upload-asset)              | `file`      |
+| Several files     | [Bulk upload assets](/api-reference/assets/bulk-upload-assets)  | `files[]`   |
+
+Both routes take `multipart/form-data` and answer `201 Created`. Single upload
+returns one asset in `data`; bulk upload returns an array.
+
+## Trash, then delete
+
+Removing assets is a two-step flow, and both steps take the same body:
+
+```json
+{
+  "asset_ids": ["01a0bd9a-ddf1-70f7-ab61-b73fe0c35428"]
+}
+```
+
+<Steps>
+  <Step title="Trash">
+    [`POST /api/v1/assets/bulk-trash`](/api-reference/assets/bulk-trash-assets)
+    moves the assets to the trash. Answers `204 No Content`.
+  </Step>
+  <Step title="Delete permanently">
+    [`DELETE /api/v1/assets/bulk-permanent`](/api-reference/assets/bulk-delete-assets)
+    removes them for good. Answers `204 No Content`.
+  </Step>
+</Steps>
+
+<Warning>
+Permanent deletion cannot be undone. Note that it is a `DELETE` request with a
+JSON body: make sure your HTTP client sends the body and the
+`Content-Type: application/json` header.
+</Warning>

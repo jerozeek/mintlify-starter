@@ -1,47 +1,71 @@
 ---
 title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+description: "Upload an asset, fetch it back, then clean up."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+The examples use two variables: `BASE_URL` (your Media Cloud host) and
+`API_KEY` (your key).
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+```bash
+export BASE_URL="https://api.mediacloud.me"
+export API_KEY="your_api_key"
+```
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Upload a file">
+    Send the file as `multipart/form-data` in the `file` field.
 
+    <CodeGroup>
+    ```bash cURL
+    curl -X POST "$BASE_URL/api/v1/assets" \
+      -H "Authorization: Bearer $API_KEY" \
+      -F "file=@./photo.jpg"
+    ```
+
+    ```javascript JavaScript
+    const form = new FormData();
+    form.append("file", fileInput.files[0]);
+
+    const res = await fetch(`${BASE_URL}/api/v1/assets`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${API_KEY}` },
+      body: form,
+    });
+    const { data } = await res.json();
+    ```
+    </CodeGroup>
+
+    The response is `201 Created` with the new asset. Keep its `id`.
+  </Step>
+  <Step title="Fetch it back">
     ```bash
-    npm install your-package
+    curl "$BASE_URL/api/v1/assets/ASSET_ID" \
+      -H "Authorization: Bearer $API_KEY"
+    ```
+
+    Use `attributes.url` to display the file, or `attributes.download_url` to
+    download it.
+  </Step>
+  <Step title="List your assets">
+    ```bash
+    curl "$BASE_URL/api/v1/assets?page=1" \
+      -H "Authorization: Bearer $API_KEY"
     ```
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
+  <Step title="Trash, then delete">
     ```bash
-    your-cli init
+    curl -X POST "$BASE_URL/api/v1/assets/bulk-trash" \
+      -H "Authorization: Bearer $API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"asset_ids": ["ASSET_ID"]}'
     ```
-  </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
-    ```
+    Both bulk routes answer `204 No Content`. To remove the asset for good, call
+    [Bulk delete assets](/api-reference/assets/bulk-delete-assets).
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+<Note>
+Uploaded assets return `is_favourite: null`. Fetch or list them to see the
+stored value.
+</Note>

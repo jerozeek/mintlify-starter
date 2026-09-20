@@ -1,0 +1,51 @@
+---
+title: "Pagination"
+description: "How Get all assets paginates results."
+---
+
+[Get all assets](/api-reference/assets/get-all-assets) returns 24 assets per
+page. Use the `page` query parameter, or follow the links in the response.
+
+```bash
+GET /api/v1/assets?page=2
+```
+
+| Parameter | Default | Description            |
+| --------- | ------- | ---------------------- |
+| `page`    | `1`     | Page number (1-based). |
+
+## Response
+
+The `data` array holds the assets. `links` gives ready-made page URLs and
+`meta` describes the current page.
+
+```json
+{
+  "data": [],
+  "links": {
+    "first": "https://api.mediacloud.me/api/v1/assets?page=1",
+    "last": "https://api.mediacloud.me/api/v1/assets?page=3",
+    "prev": null,
+    "next": "https://api.mediacloud.me/api/v1/assets?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 3,
+    "per_page": 24,
+    "to": 24,
+    "total": 60
+  }
+}
+```
+
+| Field               | Description                                        |
+| ------------------- | -------------------------------------------------- |
+| `links.next`        | URL of the next page, or `null` on the last page.  |
+| `links.prev`        | URL of the previous page, or `null` on the first.  |
+| `meta.total`        | Total number of assets.                            |
+| `meta.last_page`    | The final page number.                             |
+
+<Tip>
+Loop until `links.next` is `null` to read every asset.
+</Tip>

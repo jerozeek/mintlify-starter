@@ -1,0 +1,65 @@
+---
+title: "Assets"
+description: "What an asset is, and what each attribute means."
+---
+
+An **asset** is a file stored in Media Cloud, together with the metadata Media
+Cloud detects for it. Every asset is a JSON:API resource with `type: "assets"`.
+
+## Attributes
+
+| Attribute          | Type            | Description                                                              |
+| ------------------ | --------------- | ------------------------------------------------------------------------ |
+| `name`             | string          | The file name.                                                           |
+| `type`             | string          | The asset category, such as `image` or `document`.                       |
+| `extension`        | string          | The detected file extension.                                             |
+| `mime_type`        | string          | The detected MIME type.                                                  |
+| `size`             | integer         | File size in bytes.                                                      |
+| `folder_id`        | string or null  | The containing folder, or `null` when the asset is not in one.           |
+| `width`, `height`  | integer or null | Pixel dimensions. `null` for non-visual files.                           |
+| `duration_seconds` | number or null  | Length of audio or video. `null` otherwise.                              |
+| `optimized_size`   | integer or null | Size in bytes of the optimized version, when one exists.                 |
+| `is_favourite`     | boolean or null | Whether the asset is a favourite. `null` on upload responses.            |
+| `status`           | string          | Processing status. `ready` means the asset can be served.                |
+| `public_file_id`   | string          | Identifier used in the file URLs.                                        |
+| `url`              | string          | Serves the file content.                                                 |
+| `thumbnail_url`    | string or null  | Serves the thumbnail variant. `null` when there is none.                 |
+| `download_url`     | string          | Downloads the file.                                                      |
+| `created_at`, `updated_at` | string  | ISO 8601 timestamps in UTC.                                              |
+
+<Info>
+`extension` and `mime_type` reflect what Media Cloud detects in the file, not
+the name you uploaded. A `.docx` file can come back as `zip` and
+`application/zip` when its contents are detected that way.
+</Info>
+
+## File URLs
+
+Each asset exposes three URLs, all built from `public_file_id`:
+
+- `url`: `/api/v1/files/{public_file_id}/content`, the file itself.
+- `thumbnail_url`: the same path with `?variant=thumbnail`, for images.
+- `download_url`: `/api/v1/files/{public_file_id}/download`, which downloads it.
+
+## Example
+
+```json
+{
+  "id": "01a0bf37-4cae-71fa-be03-db13a3b10208",
+  "type": "assets",
+  "attributes": {
+    "name": "26385597.jpeg",
+    "type": "image",
+    "extension": "jpg",
+    "mime_type": "image/jpeg",
+    "size": 4052,
+    "width": 280,
+    "height": 280,
+    "status": "ready",
+    "public_file_id": "57c93652-af07-4034-a12f-f5f3f9080752",
+    "url": "https://api.mediacloud.me/api/v1/files/57c93652-af07-4034-a12f-f5f3f9080752/content",
+    "thumbnail_url": "https://api.mediacloud.me/api/v1/files/57c93652-af07-4034-a12f-f5f3f9080752/content?variant=thumbnail",
+    "download_url": "https://api.mediacloud.me/api/v1/files/57c93652-af07-4034-a12f-f5f3f9080752/download"
+  }
+}
+```

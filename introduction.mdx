@@ -1,0 +1,73 @@
+---
+title: "Introduction"
+description: "Upload, organize and serve media files with a single REST API."
+---
+
+The **Media Cloud API** lets your application upload files, list them, fetch
+their metadata and URLs, and remove them when they are no longer needed.
+
+A typical integration looks like this:
+
+<Steps>
+  <Step title="Upload">
+    Send a file, or several at once, as `multipart/form-data`. Media Cloud
+    returns an asset for each file.
+  </Step>
+  <Step title="Serve">
+    Use the asset's `url`, `thumbnail_url` or `download_url` to display or
+    download the file.
+  </Step>
+  <Step title="Clean up">
+    Move assets to the trash, then permanently delete them when you are sure.
+  </Step>
+</Steps>
+
+## Base URL
+
+Every route is mounted under `/api/v1` on your Media Cloud host.
+
+```bash
+{BASE_URL}/api/v1
+```
+
+## Response format
+
+Responses use the JSON:API media type, `application/vnd.api+json`. A single
+asset is wrapped in `data`; lists add `links` and `meta` for pagination.
+
+```json
+{
+  "data": {
+    "id": "01a0bf37-4cae-71fa-be03-db13a3b10208",
+    "type": "assets",
+    "attributes": {
+      "name": "26385597.jpeg",
+      "type": "image",
+      "status": "ready"
+    }
+  }
+}
+```
+
+Bulk trash and bulk delete answer `204 No Content` with an empty body.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="Upload assets" icon="cloud-arrow-up" href="/api-reference/assets/upload-asset">
+    Add one file, or many with a single bulk request.
+  </Card>
+  <Card title="List and fetch" icon="images" href="/api-reference/assets/get-all-assets">
+    Page through your library or fetch one asset by id.
+  </Card>
+  <Card title="Trash and delete" icon="trash" href="/concepts/upload-and-delete">
+    Soft delete first, then remove permanently.
+  </Card>
+  <Card title="Authenticate" icon="key" href="/authentication">
+    Send your API key as a Bearer token.
+  </Card>
+</CardGroup>
+
+<Card title="Start with the quickstart" icon="rocket" href="/quickstart" horizontal>
+  Upload your first asset in a few minutes.
+</Card>

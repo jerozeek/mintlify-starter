@@ -1,0 +1,39 @@
+---
+title: "Assets overview"
+description: "Upload, list, fetch, trash and permanently delete media assets."
+---
+
+Assets are the files stored in Media Cloud. This group covers uploading them,
+reading them back, and removing them. For the attribute reference see
+[Assets](/concepts/assets); for the delete flow see
+[Uploading and deleting](/concepts/upload-and-delete).
+
+<Info>
+Every route needs your API key as a Bearer token. See
+[Authentication](/authentication).
+</Info>
+
+## Endpoints
+
+| Route | Method & path | What it does |
+|-------|---------------|--------------|
+| [Upload asset](/api-reference/assets/upload-asset) | `POST /api/v1/assets` | Uploads one file. **`multipart/form-data`**, field `file`. Returns `201` with the asset. |
+| [Bulk upload assets](/api-reference/assets/bulk-upload-assets) | `POST /api/v1/assets/bulk-upload` | Uploads several files. **`multipart/form-data`**, repeat `files[]`. Returns `201` with an array of assets. |
+| [Get all assets](/api-reference/assets/get-all-assets) | `GET /api/v1/assets` | Paginated list, 24 per page. Optional `page`. See [Pagination](/essentials/pagination). |
+| [Get asset](/api-reference/assets/get-asset) | `GET /api/v1/assets/{assetId}` | Returns one asset by `id`. |
+| [Bulk trash assets](/api-reference/assets/bulk-trash-assets) | `POST /api/v1/assets/bulk-trash` | Moves assets to the trash. Body `{ "asset_ids": [...] }`. Returns `204`. |
+| [Bulk delete assets](/api-reference/assets/bulk-delete-assets) | `DELETE /api/v1/assets/bulk-permanent` | Permanently deletes assets. Same body. Returns `204`. **Cannot be undone.** |
+
+## A typical flow
+
+<Steps>
+  <Step title="Upload">
+    `POST /api/v1/assets` returns the asset and its `id`.
+  </Step>
+  <Step title="Serve">
+    Use `url`, `thumbnail_url` or `download_url` from the asset.
+  </Step>
+  <Step title="Trash, then delete">
+    `POST /api/v1/assets/bulk-trash`, then `DELETE /api/v1/assets/bulk-permanent`.
+  </Step>
+</Steps>
